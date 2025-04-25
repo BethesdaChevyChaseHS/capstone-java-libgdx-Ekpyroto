@@ -2,7 +2,7 @@ package bcc.capstone;
 
 public class Board {
     private Piece[][] grid;
-    int size;
+    private int size;
 
     public Board(int size){
         this.size = size;
@@ -20,10 +20,9 @@ public class Board {
 
     public boolean move(int x, int y, Piece piece){
         if(grid[x][y]!=Piece.EMPTY){
-            return true;
-        }
             return false;
-
+        }
+        grid[x][y]=piece;
+        return true;
     }
-
 }
