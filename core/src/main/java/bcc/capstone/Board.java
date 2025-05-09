@@ -24,5 +24,57 @@ public class Board {
         }
         grid[x][y]=piece;
         return true;
+        
+        for(int dx = -1; dx<=1; dx++){
+            for(int dy = -1; dy<=1; dy++){
+                int numChecked = 0;
+                boolean ongoing = true;
+                int curX=x;
+                int curY=y;
+
+                while(ongoing){
+                    curX+=dx;
+                    curY+=dy;
+                    switch(grid[curX][curY]){
+                        case piece: 
+                            numChecked++;
+                        break;
+
+                        case piece.opposite:
+                            ongoing=false;
+                            for(int i=0; i<numChecked; i++){
+                                curX-=dx;
+                                cuyY-=dy;
+                                grid[curX][curY]=piece;
+                            }
+                        break;
+
+                        case EMPTY:
+                            ongoing=false;
+                        break;
+                    }
+                }
+            }
+        }
+
     }
+    
+    
+    public int checkScore(Piece type){
+        int count = 0;
+        for(int row = 0; row<size; row++){
+            for(int col = 0; col<size; col++){
+                if(grid[row][col]==type){
+                    count++;
+                }
+            }
+        }
+        return count;
+
+    }
+
+
+
+    
+
 }
