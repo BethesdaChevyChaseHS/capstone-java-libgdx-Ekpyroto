@@ -23,10 +23,13 @@ public class Board {
             return false;
         }
         grid[x][y]=piece;
-        return true;
+        
         
         for(int dx = -1; dx<=1; dx++){
             for(int dy = -1; dy<=1; dy++){
+                if(dx==0&&dy==0){
+                    continue;
+                }
                 int numChecked = 0;
                 boolean ongoing = true;
                 int curX=x;
@@ -35,28 +38,25 @@ public class Board {
                 while(ongoing){
                     curX+=dx;
                     curY+=dy;
-                    switch(grid[curX][curY]){
-                        case piece: 
-                            numChecked++;
-                        break;
+                    if(grid[curX][curY]==piece){
+                        numChecked++;
 
-                        case piece.opposite:
-                            ongoing=false;
-                            for(int i=0; i<numChecked; i++){
-                                curX-=dx;
-                                cuyY-=dy;
-                                grid[curX][curY]=piece;
-                            }
-                        break;
-
-                        case EMPTY:
-                            ongoing=false;
-                        break;
+                    if(grid[curX][curY]==piece.opposite()){
+                        ongoing=false;
+                        for(int i=0; i<numChecked; i++){
+                            curX-=dx;
+                        curY-=dy;
+                            grid[curX][curY]=piece;
+                        }
+                    }
+                    if(grid[curX][curY]==piece.EMPTY){
+                        ongoing=false;
+                    }
                     }
                 }
             }
         }
-
+        return true;
     }
     
     
