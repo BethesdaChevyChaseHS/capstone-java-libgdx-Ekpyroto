@@ -2,7 +2,8 @@ package bcc.capstone;
 
 public class Board {
     private Piece[][] grid;
-    private int size;
+    private final int size;
+
 
     public Board(int size){
         this.size = size;
@@ -73,8 +74,9 @@ public class Board {
 
     }
 
-
-
+    public int getSize(){
+            return this.size; 
+        }
     
 
 }

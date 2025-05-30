@@ -26,9 +26,23 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.Game;
 
 public class Othello extends Game{
+
+    public Board GameBoard;
+
+        
     public void create() {
         setScreen(new StartScreen(this));
     }
-    public Othello(){};
+
+    public void setBoard(Board board){
+        GameBoard = board;
+    }
+
+    public Board getBoard(){
+        return GameBoard;
+    }
+    
+
+
     
 }

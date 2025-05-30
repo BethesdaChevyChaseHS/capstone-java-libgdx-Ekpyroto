@@ -27,8 +27,9 @@ import com.badlogic.gdx.utils.Align;
 
 
 public class StartScreen extends ScreenAdapter{
-    private Skin skin;
-
+ 
+        // Load the skin
+        private Skin skin;
         Stage stage = new Stage();
     public StartScreen(Othello game) {
         
@@ -45,12 +46,14 @@ public class StartScreen extends ScreenAdapter{
 
         //title
         //Container<Label> titleLabel = Constants.createLabelWithBackgrounColor("Othello",Color.BLACK,  skin);
-        // Buttons with the skin
-        TextButton simulateButton = new TextButton("Placeholder button", skin);
-        TextButton playButton = new TextButton("This took me so long to make", skin);
+        // Buttons with the skin        
+        TextButton playButton = new TextButton("Start Game", skin);
+        TextButton simulateButton = new TextButton("Simulate Games", skin);
         
         //resize text on simulate button
-        simulateButton.getLabel().setFontScale(.6f);
+        simulateButton.getLabel().setFontScale(2f);
+        playButton.getLabel().setFontScale(2f);
+
         playButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -58,7 +61,8 @@ public class StartScreen extends ScreenAdapter{
                //game.startPlayerSelection();
                 //game.setScreen(new GameScreen(game));
                 //game.skipCheckpoint1();
-                System.out.println("aaa");
+                game.setBoard(new Board(8));
+                game.setScreen(new GameScreen(game));
             }
         });
 

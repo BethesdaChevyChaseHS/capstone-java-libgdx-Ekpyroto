@@ -1,6 +1,7 @@
 package bcc.capstone;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -26,6 +27,30 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 
 
-public class GameScreen {
+public class GameScreen extends ScreenAdapter{
+    private Skin skin;
+    Stage stage = new Stage();
+    public GameScreen(Othello game) {
+        Gdx.input.setInputProcessor(stage);
+        skin = new Skin(Gdx.files.internal("skins/clean-crispy/clean-crispy-ui.json"));
 
+        Table table = new Table();
+        table.setPosition(100,100);
+        table.setSize(game.getBoard().getSize(), game.getBoard().getSize());
+
+
+     }
+
+          @Override
+     public void render(float delta) {
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        stage.act(delta);
+        stage.draw();
+    }
+
+    @Override
+    public void dispose() {
+        stage.dispose();
+        skin.dispose();
+    }
 }
