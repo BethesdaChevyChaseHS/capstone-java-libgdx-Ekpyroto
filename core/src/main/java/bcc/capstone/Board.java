@@ -17,15 +17,18 @@ public class Board {
                 grid[i][j]=Piece.EMPTY;
             }
         }
+        grid[size/2][size/2]=Piece.BLACK;
+        grid[size/2-1][size/2-1]=Piece.BLACK;
+        grid[size/2-1][size/2]=Piece.WHITE;
+        grid[size/2][size/2-1]=Piece.WHITE;
     }
 
     public boolean move(int x, int y, Piece piece){
         if(grid[x][y]!=Piece.EMPTY){
             return false;
         }
-        grid[x][y]=piece;
-        
-        
+        boolean hasMoved = false;
+
         for(int dx = -1; dx<=1; dx++){
             for(int dy = -1; dy<=1; dy++){
                 if(dx==0&&dy==0){
@@ -39,25 +42,42 @@ public class Board {
                 while(ongoing){
                     curX+=dx;
                     curY+=dy;
-                    if(grid[curX][curY]==piece){
-                        numChecked++;
+                    if(curY>=size ||curX>=size ||curY<0 ||curX<0){
+                        System.out.println("ur code is overflowing dummy");
+                        ongoing=false;
+                        continue;
+                    }
 
                     if(grid[curX][curY]==piece.opposite()){
+                        numChecked++;
+                    }
+                    if(grid[curX][curY]==piece){
+                        if(numChecked==0){
+                            ongoing=false;
+                            continue;
+                        }
+                        //if we have found a piece of the same type, we can flip the pieces
+                        hasMoved = true;
                         ongoing=false;
                         for(int i=0; i<numChecked; i++){
                             curX-=dx;
-                        curY-=dy;
+                            curY-=dy;
                             grid[curX][curY]=piece;
+
                         }
                     }
-                    if(grid[curX][curY]==piece.EMPTY){
+                    if(grid[curX][curY]==Piece.EMPTY){
                         ongoing=false;
-                    }
+                        continue;
                     }
                 }
             }
         }
-        return true;
+        if(hasMoved){
+            grid[x][y] = piece;
+            return true;
+        }
+        return false;
     }
     
     
@@ -77,6 +97,10 @@ public class Board {
     public int getSize(){
             return this.size; 
         }
+
+    public Piece getPiece(int x, int y){
+        return grid[x][y];
+    }
     
 
 }

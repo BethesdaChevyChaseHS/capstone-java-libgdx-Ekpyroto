@@ -1,7 +1,6 @@
 package bcc.capstone;
 
 import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -17,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -29,17 +29,84 @@ import com.badlogic.gdx.utils.Align;
 
 public class GameScreen extends ScreenAdapter{
     private Skin skin;
-    Stage stage = new Stage();
+    private Stage stage = new Stage();
+    private Othello game;
+    private ImageButton[][] gridArray;
+    private TextureRegionDrawable black;
+    private TextureRegionDrawable white;
+    private Piece curPlayer = Piece.BLACK; // Assuming the game starts
+
+
+
     public GameScreen(Othello game) {
+        gridArray = new ImageButton[game.getBoard().getSize()][game.getBoard().getSize()];
+        black = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("Black.png"))));
+        white = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("White.png"))));
+        this.game = game;
         Gdx.input.setInputProcessor(stage);
         skin = new Skin(Gdx.files.internal("skins/clean-crispy/clean-crispy-ui.json"));
 
+        Texture backgroundTexture = new Texture(Gdx.files.internal("gray.png"));
+        Image backgroundImage = new Image(backgroundTexture);
+        backgroundImage.setFillParent(true);
+        stage.addActor(backgroundImage);
+
         Table table = new Table();
-        table.setPosition(100,100);
-        table.setSize(game.getBoard().getSize(), game.getBoard().getSize());
+        table.setPosition(320,240);
 
+        // Create grid/buttons ONCE
+        for(int i = 0; i < game.getBoard().getSize(); i++) {
+            for(int j = 0; j < game.getBoard().getSize(); j++) {
+                // Clone the default style for each button
+                ImageButton.ImageButtonStyle style = new ImageButton.ImageButtonStyle(skin.get(ImageButton.ImageButtonStyle.class));
+                gridArray[i][j] = new ImageButton(style);
+                int tempI = i;
+                int tempJ = j;
+                gridArray[i][j].addListener(new ClickListener() {
+                    @Override
+                    public void clicked(InputEvent event, float x, float y) {
+                        boolean temp = game.getBoard().move(tempI, tempJ, curPlayer);
+                        if (temp) {
+                            curPlayer = curPlayer.opposite();
+                        updateAllButtons(); // Only update this button
+                        }
+                    }
+                });
+                table.add(gridArray[i][j]).size(50,50);
+            }
+            table.row();
+        }
 
-     }
+        // Initial update of all buttons
+        updateAllButtons();
+
+        stage.addActor(table);
+    }
+
+    // Update only one button
+    private void updateButton(int i, int j) {
+        System.out.println("updateButton: (" + i + "," + j + ") = " + game.getBoard().getPiece(i, j));
+        if(game.getBoard().getPiece(i, j) == Piece.BLACK) {
+            gridArray[i][j].getStyle().imageUp = black;
+        } 
+        else if(game.getBoard().getPiece(i, j) == Piece.WHITE) {
+            gridArray[i][j].getStyle().imageUp = white;
+        }
+        else {
+            gridArray[i][j].getStyle().imageUp = null;
+        }
+        gridArray[i][j].invalidate();
+    }
+
+    // Update all buttons (call once at start)
+    private void updateAllButtons() {
+        for(int i = 0; i < game.getBoard().getSize(); i++) {
+            for(int j = 0; j < game.getBoard().getSize(); j++) {
+                updateButton(i, j);
+            }
+        }
+    }
+
 
           @Override
      public void render(float delta) {
