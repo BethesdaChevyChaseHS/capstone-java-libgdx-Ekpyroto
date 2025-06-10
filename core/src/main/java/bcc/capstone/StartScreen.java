@@ -46,7 +46,8 @@ public class StartScreen extends ScreenAdapter{
 
         //title
         //Container<Label> titleLabel = Constants.createLabelWithBackgrounColor("Othello",Color.BLACK,  skin);
-        // Buttons with the skin        
+        // Buttons with the skin       
+         
         TextButton playButton = new TextButton("Start Game", skin);
         TextButton simulateButton = new TextButton("Simulate Games", skin);
         
@@ -61,8 +62,9 @@ public class StartScreen extends ScreenAdapter{
                //game.startPlayerSelection();
                 //game.setScreen(new GameScreen(game));
                 //game.skipCheckpoint1();
-                game.setBoard(new Board(8));
-                game.setScreen(new GameScreen(game));
+                game.setBoard(new Board(4));
+                //game.setScreen(new GameScreen(game));
+                game.setScreen(new MenuScreen(game));
             }
         });
 
@@ -76,11 +78,16 @@ public class StartScreen extends ScreenAdapter{
         });
 
         Table table = new Table();
+
+        Label titleLabel = new Label("Othello with Friends!", skin);
+        titleLabel.setFontScale(3);
+        table.add(titleLabel).padBottom(50).row();
+
         table.setFillParent(true);
         table.center();
         //table.add(titleLabel).pad(10).row();
         table.add(playButton).pad(10).row();
-        table.add(simulateButton).pad(10).row();
+        //table.add(simulateButton).pad(10).row();
         table.setBackground(backgroundDrawable);
 
         stage.addActor(table);

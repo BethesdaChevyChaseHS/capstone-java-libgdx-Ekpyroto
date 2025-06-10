@@ -1,5 +1,7 @@
 package bcc.capstone;
 
+import org.w3c.dom.Text;
+
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -67,10 +69,58 @@ public class GameScreen extends ScreenAdapter{
                     public void clicked(InputEvent event, float x, float y) {
                         boolean temp = game.getBoard().move(tempI, tempJ, curPlayer);
                         if (temp) {
-                            curPlayer = curPlayer.opposite();
-                        updateAllButtons(); // Only update this button
+                            if(game.getBoard().hasLegalMove(curPlayer.opposite())) {
+                                curPlayer = curPlayer.opposite();
+                            }
+                            else if(game.getBoard().hasLegalMove(curPlayer)){
+
+                            }
+                            else{
+                                if(game.getBoard().checkScore(Piece.BLACK) > game.getBoard().checkScore(Piece.WHITE)) {
+                                    TextButton winnerButton = new TextButton("Black Wins!", skin);
+                                    winnerButton.setPosition(170, 205);
+                                    winnerButton.setSize(300, 70);
+                                    winnerButton.getLabel().setFontScale(2);
+
+                                    winnerButton.addListener(new ClickListener() {
+                                        @Override
+                                        public void clicked(InputEvent event, float x, float y) {
+                                            game.setScreen(new MenuScreen(game)); // Go back to start screen
+                                        }
+                                    });
+                                    stage.addActor(winnerButton);
+                                } else if(game.getBoard().checkScore(Piece.BLACK) < game.getBoard().checkScore(Piece.WHITE)) {
+                                    TextButton winnerButton = new TextButton("White Wins!", skin);
+                                    winnerButton.setPosition(170, 205);
+                                    winnerButton.setSize(300, 70);
+
+                                    winnerButton.getLabel().setFontScale(2);
+                                    winnerButton.addListener(new ClickListener() {
+                                        @Override
+                                        public void clicked(InputEvent event, float x, float y) {
+                                            game.setScreen(new MenuScreen(game)); // Go back to start screen
+                                        }
+                                    });
+                                    stage.addActor(winnerButton);
+                                } else {
+                                    TextButton winnerButton = new TextButton("Draw!", skin);
+                                    winnerButton.setPosition(170, 205);
+                                    winnerButton.setSize(300, 70);
+
+                                    winnerButton.getLabel().setFontScale(2);
+
+                                    winnerButton.addListener(new ClickListener() {
+                                        @Override
+                                        public void clicked(InputEvent event, float x, float y) {
+                                            game.setScreen(new MenuScreen(game)); // Go back to start screen
+                                        }
+                                    });
+                                    stage.addActor(winnerButton);
+                                }
+                            }
                         }
-                    }
+                        updateAllButtons(); // Only update this button
+                    } 
                 });
                 table.add(gridArray[i][j]).size(50,50);
             }

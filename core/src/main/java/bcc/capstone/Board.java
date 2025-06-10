@@ -102,5 +102,37 @@ public class Board {
         return grid[x][y];
     }
     
+    // Checks if placing 'piece' at (x, y) would be a legal move, without modifying the board
+    private boolean isLegalMove(int x, int y, Piece piece) {
+        if (grid[x][y] != Piece.EMPTY) return false;
+        for (int dx = -1; dx <= 1; dx++) {
+            for (int dy = -1; dy <= 1; dy++) {
+                if (dx == 0 && dy == 0) continue;
+                int curX = x + dx;
+                int curY = y + dy;
+                int numChecked = 0;
+                while (curX >= 0 && curX < size && curY >= 0 && curY < size && grid[curX][curY] == piece.opposite()) {
+                    curX += dx;
+                    curY += dy;
+                    numChecked++;
+                }
+                if (numChecked > 0 && curX >= 0 && curX < size && curY >= 0 && curY < size && grid[curX][curY] == piece) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
+    // Returns true if there is at least one legal move for 'piece'
+    public boolean hasLegalMove(Piece piece) {
+        for (int x = 0; x < size; x++) {
+            for (int y = 0; y < size; y++) {
+                if (isLegalMove(x, y, piece)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }
