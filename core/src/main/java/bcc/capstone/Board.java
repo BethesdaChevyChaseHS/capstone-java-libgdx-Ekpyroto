@@ -91,7 +91,6 @@ public class Board {
             }
         }
         return count;
-
     }
 
     public int getSize(){

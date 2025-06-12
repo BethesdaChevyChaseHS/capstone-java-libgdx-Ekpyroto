@@ -47,6 +47,8 @@ public class GameScreen extends ScreenAdapter{
         this.game = game;
         Gdx.input.setInputProcessor(stage);
         skin = new Skin(Gdx.files.internal("skins/clean-crispy/clean-crispy-ui.json"));
+        skin.getAtlas().getTextures().forEach(texture -> texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest));
+
 
         Texture backgroundTexture = new Texture(Gdx.files.internal("gray.png"));
         Image backgroundImage = new Image(backgroundTexture);

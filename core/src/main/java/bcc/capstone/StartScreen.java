@@ -4,6 +4,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.Gdx;
@@ -37,6 +38,7 @@ public class StartScreen extends ScreenAdapter{
         
 
         skin = new Skin(Gdx.files.internal("skins/clean-crispy/clean-crispy-ui.json"));
+        skin.getAtlas().getTextures().forEach(texture -> texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest));
         // Load the skin
 
         //load image
@@ -80,6 +82,7 @@ public class StartScreen extends ScreenAdapter{
         Table table = new Table();
 
         Label titleLabel = new Label("Othello with Friends!", skin);
+
         titleLabel.setFontScale(3);
         table.add(titleLabel).padBottom(50).row();
 

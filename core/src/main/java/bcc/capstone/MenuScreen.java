@@ -34,6 +34,8 @@ public class MenuScreen extends ScreenAdapter{
         this.game = game;
         stage = new Stage();
         skin = new Skin(Gdx.files.internal("skins/clean-crispy/clean-crispy-ui.json"));
+        skin.getAtlas().getTextures().forEach(texture -> texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest));
+
         Gdx.input.setInputProcessor(stage);
         createMenu();
     }
@@ -52,6 +54,7 @@ public class MenuScreen extends ScreenAdapter{
         Label titleLabel = new Label("Configure Game", skin);
         titleLabel.setFontScale(2);
         table.add(titleLabel).padBottom(50).row();
+
 
         // Add label and text field for number input
         Label inputLabel = new Label("Board Size:", skin);
